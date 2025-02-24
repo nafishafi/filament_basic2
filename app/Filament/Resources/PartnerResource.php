@@ -4,7 +4,7 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use Filament\Tables;
-use App\Models\Section;
+use App\Models\Partner;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
@@ -12,15 +12,15 @@ use Filament\Forms\Components\Card;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use App\Filament\Resources\SectionResource\Pages;
+use App\Filament\Resources\PartnerResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\SectionResource\RelationManagers;
+use App\Filament\Resources\PartnerResource\RelationManagers;
 
-class SectionResource extends Resource
+class PartnerResource extends Resource
 {
-    protected static ?string $model = Section::class;
+    protected static ?string $model = Partner::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-bookmark';
+    protected static ?string $navigationIcon = 'heroicon-o-arrow-top-right-on-square';
 
     public static function form(Form $form): Form
     {
@@ -34,10 +34,8 @@ class SectionResource extends Resource
                     Forms\Components\RichEditor::make('content')
                         ->required()
                         ->columnSpanFull(),
-                    Forms\Components\Select::make('post_as')->options([
-                        'JUMBOTRON' => 'JUMBOTRON',
-                        'ABOUT' => 'ABOUT',
-                    ])->required(),
+                    Forms\Components\TextInput::make('link')
+                        ->required(),
                 ]),
             ]);
     }
@@ -51,8 +49,9 @@ class SectionResource extends Resource
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('thumbnail')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('post_as')
-                    ->searchable(),
+                Tables\Columns\TextColumn::make('link')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -87,9 +86,9 @@ class SectionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSections::route('/'),
-            'create' => Pages\CreateSection::route('/create'),
-            'edit' => Pages\EditSection::route('/{record}/edit'),
+            'index' => Pages\ListPartners::route('/'),
+            'create' => Pages\CreatePartner::route('/create'),
+            'edit' => Pages\EditPartner::route('/{record}/edit'),
         ];
     }
 }
